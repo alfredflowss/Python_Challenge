@@ -1,0 +1,84 @@
+import os
+import csv
+
+#reading the file
+csvpath = os.path.join("budgtest")
+#to write the file 
+f = open("myfile4.txt", "w")
+#open csv file
+with open(csvpath, 'r', newline = "") as csvfile:
+    
+    #read the csv file witht he "," delimiter
+    csvreader = csv.reader(csvfile, delimiter = ",")
+    
+    #declare list variables
+    months = []
+    profits = []
+    pro_loss = []
+    changes = []
+    
+    #defining functions  
+    def average(mylist):
+        length = len(mylist)
+        #print(length)
+        total = 0
+        for x in mylist:
+            total = total + int(x)
+        avg = round((total / length), 2)
+        return avg
+        
+    def sum(mylist):
+        total = 0
+        for x in mylist[1:]:
+            total = total + int(x)
+        return total
+        
+    #reading rows from csv 
+    for rows in csvreader:
+        months.append(rows[0])
+        profits.append(rows[1])
+    
+    #creating a list of changes in prices
+    pro_loss = (profits[1:])
+    for i in range(0, len(pro_loss)):
+        pro_loss[i] = int(pro_loss[i])
+        
+    #creating a list in differences of the prices     
+    for x in range((len(pro_loss) - 1)):
+        changes.append((pro_loss[x+1] - pro_loss[x]))
+    
+    #getting the greatest increase and getting the index 
+    greatest_increase = 0
+    for index,x in enumerate (profits[1:]):
+        if int(x) >= greatest_increase:
+            greatest_increase = int(x)
+            position_inc = index + 1
+    #getting the greatest decrease and getting the index        
+    greatest_decrease = 0 
+    for index,x in enumerate (profits[1:]):
+        if int(x) <= greatest_decrease:
+            greatest_decrease = int(x)
+            position_dec = index + 1
+        
+    #Printing results  
+    print("Financial Analysis")
+    print("----------------------------")
+    print(f'Total Months: {len(months[1:])}')
+    print(f'Total : ${sum(profits)}')
+    print(f'Average  Change: ${average(changes)}')
+    print(f'Greatest Increase in Profits: {months[position_inc]} ${greatest_increase}')
+    print(f'Greatest Decrease in Profits: {months[position_dec]} ${greatest_decrease}')
+    
+    #outputting the file into a myfile.txt
+    f.write("Financial Analysis\n")
+    f.write("----------------------------\n")
+    f.write(f'Total Months: {len(months[1:])}\n')
+    f.write(f'Total : ${sum(profits)}\n')
+    f.write(f'Average  Change: ${average(changes)}\n')
+    f.write(f'Greatest Increase in Profits: {months[position_inc]} ${greatest_increase}\n')
+    f.write(f'Greatest Decrease in Profits: {months[position_dec]} ${greatest_decrease}\n')
+    
+    
+    
+    
+    
